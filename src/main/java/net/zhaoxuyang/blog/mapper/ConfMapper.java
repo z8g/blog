@@ -1,7 +1,6 @@
 package net.zhaoxuyang.blog.mapper;
 
 import net.zhaoxuyang.blog.model.Conf;
-import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.MapKey;
 import org.springframework.stereotype.Repository;

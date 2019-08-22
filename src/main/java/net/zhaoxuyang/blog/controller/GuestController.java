@@ -1,24 +1,18 @@
 package net.zhaoxuyang.blog.controller;
 
-import com.github.pagehelper.PageInfo;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import net.zhaoxuyang.blog.exception.BlogException;
 import static net.zhaoxuyang.blog.exception.BlogException.Type.UserLoginFail;
-import net.zhaoxuyang.blog.model.Article;
 import net.zhaoxuyang.blog.model.User;
 import net.zhaoxuyang.blog.service.ArticleService;
 import net.zhaoxuyang.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
