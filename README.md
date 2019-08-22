@@ -1,6 +1,27 @@
+
+# Personal blog
+Post Address: https://zhaoxuyang.net
+## 1 Summary of features
+- Write a blog post using MarkDawn syntax.
+- Dynamic change of front-end information
+- Retrieve blog posts by label, personal category, archive, title or content
+- The blog page.
+-Responsive, fully compatible with mobile
+## 2 Technical description
+- Spring Boot + MyBatis + Beetl + jQuery + Boottrap
+- MyBatis Dynamic SQL, paging, multiple to one
+- Responsive Markdown Editor
+- User interceptor intercept URL implementation access control
+- Log Action intercepts all request methods in the Control, records the request information, and the statistical method is time consuming.
+- RESTful style.
+- Uniform exception handling.
+
+
+----
+
 # 个人博客
 
-发布地址：https://blog.zhaoxuyang.net
+发布地址：https://zhaoxuyang.net
 
 ## 1 功能概述
 
@@ -21,22 +42,3 @@
 - 统一的异常处理
 
 
-----
-
-
-# Personal blog
-Post Address: https://blog.zhaoxuyang.net
-## 1 Summary of features
-- Write a blog post using MarkDawn syntax.
-- Dynamic change of front-end information
-- Retrieve blog posts by label, personal category, archive, title or content
-- The blog page.
--Responsive, fully compatible with mobile
-## 2 Technical description
-- Spring Boot + MyBatis + Beetl + jQuery + Boottrap
-- MyBatis Dynamic SQL, paging, multiple to one
-- Responsive Markdown Editor
-- User interceptor intercept URL implementation access control
-- Log Action intercepts all request methods in the Control, records the request information, and the statistical method is time consuming.
-- RESTful style.
-- Uniform exception handling.
