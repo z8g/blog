@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <#head title="${article.title}" />
+
+        <!-- MarkDown 插件 -->
+        <link rel="stylesheet" href="${ctxPath}/assets/plugins/markdown/editormd.css" />
+        <script src="${ctxPath}/assets/plugins/markdown/editormd.js"></script>   
+        <script src="${ctxPath}/assets/js/markdown-edit.js"></script>
+        <!-- MarkDown 插件 end -->
+        <link rel="stylesheet" href="${ctxPath}/assets/plugins/flexslider/flexslider.css" type="text/css" media="screen" />
+
+    </head>
+    <body>
+        <div class="wrapper">
+            <#header />
+            <section class="main">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li>
+                                    <a href="#" data-target="#submitArticleModal" data-toggle="modal">发表文章</a>
+                                </li>
+                                <li>
+                                    <a href="${ctxPath}/user/article" id="aricle-exit"  tabindex="-1" >
+                                        退出编辑
+                                    </a>
+                                </li>
+
+                                <li class="dropdown hidden-xs">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <select class="form-control" id="editormd-theme-select"></select>
+                                        </li>
+                                        <li>
+                                            <select class="form-control" id="editor-area-theme-select"></select>
+                                        </li>
+                                        <li>
+                                            <select class="form-control" id="preview-area-theme-select"></select>
+                                        </li>
+                                    </ul>
+
+                                </li>
+
+
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="breadcrumb pull-right">
+                                <li><a href="${ctxPath}/">首页</a></li>
+                                <li>管理员</li>
+                                <li>文章管理</li>
+                                <li>编辑文章</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="test-editormd">
+                        <textarea style="display:none;" name="markdown" id="article-markdown" required="required">${article.markdown}</textarea>
+                    </div>
+                </div>
+            </section>
+
+
+            <div aria-labelledby="sendMessageModalLabel" role="dialog" tabindex="-1" id="submitArticleModal" class="modal fade in">
+                <div role="document" class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+                            <h4 id="sendMessageModalLabel" class="modal-title">发表文章</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                        分类：
+                                    </label>
+                                    <select class="form-control" name="category" id="article-category">
+
+                                        @for(var category in categoryMap!){
+                                        @if(article.category == category.key){
+                                        <option value="${category.key}" selected="selected">${category.key}</option>
+                                        @} else {
+                                        <option value="${category.key}">${category.key}</option>
+                                        @}
+                                        @} elsefor{
+                                        <option value="无分类">无分类</option>
+                                        @}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <input id="article-new-category" name="newCategory" type="text" placeholder="填写新分类" maxlength="20" class="form-control " />
+                                    <p class="text-info text-right">填写新分类后会忽略下拉框所选分类</p>
+                                </div>
+
+
+                                <!--标签-->
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        <i class="fa fa-tags" aria-hidden="true"></i>
+                                        标签：
+                                    </label>
+                                    <input value="${article.tags}" class="form-control" id="article-tags" name="tags" placeholder="例如“标签1 | 标签2 | 标签3”" />
+                                    <p class="text-info text-right">多个标签使用 | 号分开</p>
+                                </div>
+
+
+                                <!-- 权限 -->
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        权限：
+                                    </label>
+                                    <select class="form-control" id="article-auth" name="auth">
+                                        <option value="0">公开</option>
+                                        @if(article.auth == 1){
+                                        <option value="1" selected="selected">私密</option>
+                                        @}else{
+                                        <option value="1">私密</option>
+                                        @}
+                                    </select>
+                                </div>
+
+                                <!-- 标题 -->
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        <input type="hidden" id="article-id" value="${article.id!0}" />
+                                        <i class="fa fa-flag-o" aria-hidden="true"></i>
+                                        标题：
+                                    </label>
+                                    <input value="${article.title}" class="form-control" id="article-title" name="title" placeholder="输入文章的标题" />
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+                            <button id="article-submit" class="btn btn-custom" type="button">发表</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / .counter -->
+
+            <#footer />
+
+        </div>
+
+
+        <#script />
+        <script defer src="${ctxPath}/assets/plugins/flexslider/jquery.flexslider.js"></script>
+
+        <script>
+            $(function () {
+                /**
+                 * 文章-提交
+                 */
+                $('#article-submit').bind('click', function () {
+                    /**
+                     * 验证阶段
+                     */
+                    let articleId = $('#article-id').val();
+                    let articleTitle = $('#article-title').val();
+                    let articleMarkdown = $('#article-markdown').val();
+                    let articleCategory = $('#article-category').val();
+                    let articleNewCategory = $('#article-new-category').val();
+                    let articleTags = $('#article-tags').val();
+                    let articleAuth = $('#article-auth').val();
+
+                    if (articleTitle === null || articleTitle.trim().length === 0) {
+                        alert('文章标题不能为空！');
+                        return;
+                    }
+                    if (articleMarkdown === null || articleMarkdown.trim().length === 0) {
+                        alert('文章内容不能为空！');
+                        return;
+                    }
+                    let category = articleNewCategory.trim().length > 0 ? articleNewCategory.trim() : articleCategory;
+
+
+                    let url = getLocalhostPath();
+                    if (articleId > 0) {
+                        url += 'user/article/update/' + articleId;
+                    } else {
+                        url += "user/article/create";
+                    }
+                    /**
+                     * 文章发表事件
+                     */
+                    $.ajax(url, {
+                        data: {
+                            title: articleTitle,
+                            markdown: articleMarkdown,
+                            category: category,
+                            tags: articleTags,
+                            id: articleId,
+                            auth: articleAuth
+                        },
+                        success: function (data) {
+                            if (data) {
+                                alert("发表成功！");
+                                location.href = getLocalhostPath() + "user/article";
+                            }
+                        },
+                        fail: function () {
+                            alert("提交失败！服务端未响应！");
+                        },
+                        type: "POST"
+                    });
+                });
+
+                if ($(".owl-carousel-featured").length > 0) {
+                    $(".owl-carousel-featured").owlCarousel({
+                        items: 3,
+                        lazyLoad: true,
+                        pagination: true,
+                        autoPlay: 5000,
+                        stopOnHover: true
+                    });
+                }
+
+//                /**
+//                 * 草稿箱-保存
+//                 */
+//                $('#article-save').bind('click', function () {
+//                    localStorage['title2'] = $('#article-title').val();
+//                    localStorage['newCategory2'] = $('#article-new-category').val();
+//                    localStorage['newType2'] = $('#article-new-type').val();
+//                    localStorage['tags2'] = $('#article-tags').val();
+//                    localStorage['markdown2'] = $('#article-markdown').val();
+//                    alert('文章已保存！');
+//                });
+//
+//                /**
+//                 * 草稿箱-恢复
+//                 */
+//                $('#article-recovery').bind('click', function () {
+//                    $('#article-title').val(localStorage['title2']);
+//                    $('#article-new-category').val(localStorage['newCategory2']);
+//                    $('#article-new-type').val(localStorage['newType2']);
+//                    $('#article-tags').val(localStorage['tags2']);
+//                    $('#article-markdown').val(localStorage['markdown2']);
+//                    alert('文章已恢复！');
+//                    window.location.reload();
+//                });
+//
+//                $('#article-auto-save').bind('click', function () {
+//                    if (localStorage['isAutoSave'] === "true") {
+//                        //已自动保存
+//                        localStorage['isAutoSave'] = false;
+//                        $('#article-auto-save').text('未自动保存');
+//                        alert('不再自动保存！');
+//                    } else {
+//                        localStorage['isAutoSave'] = true;
+//                        $('#article-auto-save').text('已自动保存');
+//                        alert('已设置为自动保存');
+//                    }
+//                });
+//                /**
+//                 * 初始化阶段，设置是否自动保存按钮的文本
+//                 */
+//                if (localStorage['isAutoSave'] === 'true') {
+//                    $('#article-auto-save').text('已自动保存');
+//                } else {
+//                    $('#article-auto-save').text('未自动保存');
+//
+//                }
+//
+//                /**
+//                 * 编辑器的内容被改变时
+//                 */
+//                $('#article-markdown').bind('change', function () {
+//                    if (localStorage['isAutoSave'] === 'true') {
+//                        localStorage['title2'] = $('#article-title').val();
+//                        localStorage['newCategory2'] = $('#article-new-category').val();
+//                        localStorage['tags2'] = $('#article-tags').val();
+//                        localStorage['markdown2'] = $('#article-markdown').val();
+//                    }
+//                });
+
+
+
+
+
+                function getLocalhostPath() {
+
+                    //获取当前网址，如： http://localhost:8080/Tmall/index.jsp 
+                    var curWwwPath = window.document.location.href;
+
+                    //获取主机地址之后的目录如：/Tmall/index.jsp 
+                    var pathName = window.document.location.pathname;
+                    var pos = curWwwPath.indexOf(pathName);
+
+                    //获取主机地址，如： http://localhost:8080 
+                    var localhostPath = curWwwPath.substring(0, pos);
+                    return localhostPath + "/";
+
+                    //获取带"/"的项目名，如：/Tmall 
+                    //var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);     
+                }
+
+
+            });
+
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,98 @@
+<header class="navbar navbar-default navbar-fixed-top navbar-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+                <span class="sr-only">导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="${ctxPath}/" class="navbar-brand"><span class="logo">${ confMap["website.title"].value }</span></a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="${ctxPath}/"><i class="fa fa-home"></i>&nbsp;首页</a></li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                    <div class="dropdown-menu dropdown-login" style="padding:15px;min-width:250px">
+                        <form action="${ctxPath}/a/search" method="POST">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon addon-login"><i class="fa fa-edit"></i></span>
+                                    <input name="keyword" type="text" placeholder="输入关键词" required="required" class="form-control input-login" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-custom btn-block" value="搜索文章">
+                        </form>
+                    </div>
+                </li>
+
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        <i class="fa fa-list"></i>&nbsp;项目链接&nbsp;
+                    </a>
+                    <ul class="dropdown-menu">
+                        ${ confMap["website.projectLink"].value }
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                        <i class="fa fa-link"></i>&nbsp;友情链接&nbsp;
+                    </a>
+                    <ul class="dropdown-menu">
+                        ${ confMap["website.friendLink"].value }
+                    </ul>
+                </li>
+                <li>
+                    <a href="${ctxPath}/rss.xml" target="_blank">
+                        <i class="fa fa-rss-square"></i>&nbsp;RSS订阅&nbsp;
+                    </a>
+                </li>
+
+                @if(isLogin){
+                <li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-cogs"></i>&nbsp;管理员&nbsp;</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="${ctxPath}/user/conf">参数管理</a></li>
+                        <li><a href="${ctxPath}/user/article">文章管理</a></li>
+                        <li><a href="${ctxPath}/user/logout">退出登录</a></li>
+                    </ul>
+                </li>
+                @}else{
+                <li class="dropdown">
+                    <a class="dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-sign-in"></i>&nbsp;登录</a>
+                    <div class="dropdown-menu dropdown-login" style="padding:15px;min-width:250px">
+                        <form action="${ctxPath}/login" method="POST">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon addon-login"><i class="fa fa-user"></i></span>
+                                    <input name="username" type="text" placeholder="账号" required="required" class="form-control input-login" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon addon-login"><i class="addon fa fa-lock"></i></span>
+                                    <input name="password" type="password" placeholder="密码" required="required" class="form-control input-login" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label class="string optional" for="user_remember_me">
+                                        <input type="checkbox" id="user_remember_me" />
+                                        记住密码
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-custom btn-block" value="登录">
+                            <a href="#" class="btn-block text-center">忘记密码?</a>
+                        </form>
+                    </div>
+                </li>
+                @}
+            </ul>
+        </div>
+    </div>
+</header>

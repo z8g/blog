@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <#head title="文章管理" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <#header />
+            <section class="main">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <a href="${ctxPath}/user/article/create" target="_blank" class="btn btn-info">写文章</a>
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="breadcrumb pull-right">
+                                <li><a href="${ctxPath}/">首页</a></li>
+                                <li>管理员</li>
+                                <li>文章管理</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <ul class="list-group">
+                        @for(var article in pageInfo.list){
+                        <li class="list-group-item">
+
+                            <p>${article}</p>
+                            <p class="text-right">
+                                <a target="_blank" href="${ctxPath}/a/${article.id}">预览</a>
+                                <a target="_blank" href="${ctxPath}/user/article/update/${article.id}" class="text-primary">修改</a>
+                                <a target="_blank" href="${ctxPath}/user/article/delete/${article.id}" class="text-danger">删除</a>
+                            </p>
+
+                        </li>
+                        @}
+                    </ul>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <ul class="pagination">
+                                @if(pageInfo.pageNum!=1){
+                                <li><a href="${ctxPath}/user/article/1">首页</a></li>
+                                @}
+
+                                @if(pageInfo.hasPreviousPage){
+                                <li><a href="${ctxPath}/user/article/${pageInfo.prePage}">上页</a></li>
+                                @}
+                                <li class="active"><a>${pageInfo.pageNum}</a></li>
+                                @if(pageInfo.hasNextPage){
+                                <li><a href="${ctxPath}/user/article/${pageInfo.nextPage}">下页</a></li>
+                                @}
+
+                                @if(pageInfo.pageNum!=pageInfo.pages){
+                                <li><a href="${ctxPath}/user/article/${pageInfo.pages}">尾页</a></li>
+                                @}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- / .counter -->
+
+            <#footer />
+
+        </div>
+
+
+        <#script />
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                if ($(".owl-carousel-featured").length > 0) {
+                    $(".owl-carousel-featured").owlCarousel({
+                        items: 3,
+                        lazyLoad: true,
+                        pagination: true,
+                        autoPlay: 5000,
+                        stopOnHover: true
+                    });
+                }
+
+                $('.item-count').countTo({
+                    formatter: function (value, options) {
+                        return value.toFixed(options.decimals);
+                    },
+                    onUpdate: function (value) {
+                        console.debug(this);
+                    },
+                    onComplete: function (value) {
+                        console.debug(this);
+                    }
+                });
+
+            });
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <#head title="参数管理" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <#header />
+            <section class="main">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            &nbsp;
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="breadcrumb pull-right">
+                                <li><a href="${ctxPath}/">首页</a></li>
+                                <li>管理员</li>
+                                <li>参数管理</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    @for(var confLP in confMap){
+                    <form class="form-horizontal col-xs-12" action="${ctxPath}/user/conf" method="post">
+                        <div class="form-group">
+                            <input type="hidden" name="key" value="${ confLP.key }" />
+                            <label title="键" class="control-label">${ confLP.key }</label>
+                            <button type="submit" class="btn btn-link">修改此项</button>
+                        </div>
+                        <div class="form-group">
+                            <textarea title="值" rows="4" name="value" class="form-control">${ confLP.value.value }</textarea>
+                        </div>
+                        <div class="form-group">
+                            <input title="备注" class="form-control" name="info" type="text" value="${confLP.value.info}" />
+                        </div>
+                    </form>  
+                    @} 
+
+                </div>
+            </section>
+            <!-- / .counter -->
+
+            <#footer />
+
+        </div>
+
+
+        <#script />
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                if ($(".owl-carousel-featured").length > 0) {
+                    $(".owl-carousel-featured").owlCarousel({
+                        items: 3,
+                        lazyLoad: true,
+                        pagination: true,
+                        autoPlay: 5000,
+                        stopOnHover: true
+                    });
+                }
+
+                $('.item-count').countTo({
+                    formatter: function (value, options) {
+                        return value.toFixed(options.decimals);
+                    },
+                    onUpdate: function (value) {
+                        console.debug(this);
+                    },
+                    onComplete: function (value) {
+                        console.debug(this);
+                    }
+                });
+            });
+        </script>
+
+    </body>
+</html>

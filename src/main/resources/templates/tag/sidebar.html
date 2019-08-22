@@ -1,0 +1,54 @@
+
+
+<div class="widget">
+    <div class="widget-header">
+        <h3>分类</h3>
+    </div>
+    <div class="widget-body">
+        <ul class="trends">
+            @for(var entry in categoryMap){
+            <li>
+                <a href="${ctxPath}/a/c/${entry.key}">
+                    ${entry.key}&nbsp;
+                    <span class="item-numbers">(${entry.value})</span>
+                </a>
+            </li>
+            @}
+        </ul>
+    </div>
+</div>
+
+<div class="widget">
+    <div class="widget-header">
+        <h3>归档</h3>
+    </div>
+    <div class="widget-body">
+        <ul class="trends">
+            @for(var entry in yearMonthMap){
+            <li>
+                <a href="${ctxPath}/a/y/${entry.key}">
+                    ${entry.key}&nbsp;
+                    <span class="item-numbers">(${entry.value})</span>
+                </a>
+            </li>
+            @}
+        </ul>
+    </div>
+</div>
+
+<div class="widget">
+    <div class="widget-header">
+        <h3>标签</h3>
+    </div>
+    <div class="widget-body">
+        @var labelTheme = ["danger","info","primary","default","success","warning"];
+
+        @for(var entry in tagSet){
+        @var theme = labelTheme[entryLP.index % 6];
+        <a href="${ctxPath}/a/t/${entry}"><span class="label label-${theme}">${entry}</span></a>
+        @}
+    </div>
+</div>
+<div class="banner-widget">
+    <img src="${ confMap['website.banner'].value }" alt="广告" class="img-responsive">
+</div>

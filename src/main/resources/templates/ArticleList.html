@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>  
+    <head>
+        <#head title="${selectCondition==null?'文章列表':selectCondition}" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <#header />
+
+            <section class="category-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            &nbsp;
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="breadcrumb pull-right">
+                                <li><a href="${ctxPath}/">首页</a></li>
+                                <li><a href="${ctxPath}/a">文章列表</a></li>
+                                <li>${selectTitle}</li>
+                                <li>${selectCondition}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3">
+                            <#sidebar_author />
+                            <#sidebar />
+                        </div>
+                        <div class="col-md-9 col-sm-9">
+
+                            <div class="search-results-box">
+                                <div class="row">
+                                    <div class="col-md-12 search-results">
+                                        <!--                                        ${pageInfo}-->
+                                        根据 <span>${selectTitle}</span> 查询 <code>${selectCondition}</code>
+                                        共 <span>${pageInfo.total}</span> 条结果;
+                                        @if(pageInfo.total > 0){
+                                        每页 <span>${pageInfo.pageSize}</span> 条,
+                                        第 <span>${pageInfo.pageNum}</span> / <span>${pageInfo.pages}</span> 页;
+                                        @}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <#articlelist />
+
+
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <ul class="pagination">
+                                        @if(pageInfo.pageNum!=1){
+                                        <li><a href="${ctxPath}/${selectUri}${selectCondition}/1">首页</a></li>
+                                        @}
+
+                                        @if(pageInfo.hasPreviousPage){
+                                        <li><a href="${ctxPath}/${selectUri}${selectCondition}/${prePage}">上页</a></li>
+                                        @}
+                                        <li class="active"><a>${pageInfo.pageNum}</a></li>
+                                        @if(pageInfo.hasNextPage){
+                                        <li><a href="${ctxPath}/${selectUri}${selectCondition}/${nextPage}">下页</a></li>
+                                        @}
+
+                                        @if(pageInfo.pageNum!=pageInfo.pages){
+                                        <li><a href="${ctxPath}/${selectUri}${selectCondition}/${pageInfo.pages}">尾页</a></li>
+                                        @}
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </section>
+
+            <#footer />
+        </div>
+
+        <#script />
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+
+    </body>
+</html> 

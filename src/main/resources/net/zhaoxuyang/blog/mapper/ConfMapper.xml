@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ConfMapper.xml -->
+
+<mapper namespace="net.zhaoxuyang.blog.mapper.ConfMapper">
+    
+     <resultMap id="ConfResultMap" type="Conf">
+        <id property="key" column="k"/>
+        <result property="value" column="v"/>
+        <result property="info" column="i"/>
+    </resultMap>
+    
+    <select id="getMap" parameterType="java.lang.String" resultMap="ConfResultMap">
+        select k,v,i from conf
+    </select>  
+    
+    <select id="get" parameterType="java.lang.String" resultMap="ConfResultMap">
+        select k,v,i from conf where k = #{ key }
+    </select>
+    
+    <update id="update" parameterType="Conf">
+        update conf
+        set v =#{ value },i=#{ info }
+        where k = #{ key }
+    </update>
+      
+</mapper>

@@ -1,0 +1,16 @@
+<div class="widget">
+    <div class="widget-header">
+        <h3>作者简介</h3>
+    </div>
+    <div class="widget-body text-center">
+        <img alt="avatar" src="${ confMap['website.user.headImg'].value }" class="seller-avatar img-responsive">
+        <h2 class="seller-name">${ confMap["user.nickname"].value }</h2>
+        <p class="seller-detail">
+            <i class="fa fa-envelope"></i>&nbsp;${ confMap['user.email'].value }
+        </p>
+        <blockquote  class="seller-info text-left">
+            ${ confMap["user.info"].value }
+        </blockquote>
+    </div>
+    ${ confMap["website.user.contact"].value }
+</div>

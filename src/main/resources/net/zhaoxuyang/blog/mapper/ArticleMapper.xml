@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.zhaoxuyang.blog.mapper.ArticleMapper">
+    <resultMap id="ArticleResultMap" type="Article">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="category" column="category"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtUpdate" column="gmt_update"/>
+        <result property="markdown" column="markdown"/>
+        <result property="summary" column="summary"/>
+        <result property="tags" column="tags"/>
+        <result property="auth" column="auth"/>
+    </resultMap>
+    
+    <!-- markdown字段内容太大，不列出，在get中列出 -->
+    <select id="listAnd" parameterType="Article" resultMap="ArticleResultMap">
+        select id , title , category , gmt_create , gmt_update , summary, tags , auth
+        from article
+        <where>
+            <if test="id != null">
+                id = #{ id }
+            </if>
+            <if test="category != null">
+                and category = #{ category }
+            </if>
+            <if test="title != null and title != ''">
+                <bind name="title2" value="'%' + title + '%'" />
+                and title LIKE #{ title2 }
+            </if>
+            <if test="markdown != null and markdown != ''">
+                <bind name="markdown2" value="'%' + markdown + '%'" />
+                and markdown LIKE #{ markdown2 }
+            </if>
+            <if test="tags != null and tags != ''">
+                and #{tags} in (
+                select SUBSTRING_INDEX(
+                SUBSTRING_INDEX(tags,'|',help_topic_id+1),'|',-1
+                ) AS num 
+                from mysql.help_topic 
+                where help_topic_id &lt; LENGTH(tags)-LENGTH(REPLACE(tags,'|',''))+1)
+            </if>
+            <if test="auth != null">
+                and auth &lt;= #{ auth }
+            </if>
+        </where>
+        order by gmt_update desc
+    </select>
+   
+    
+    <!-- markdown字段内容太大，不列出，在get中列出 -->
+    <select id="listOr" parameterType="Article" resultMap="ArticleResultMap">
+        select id , title , category , gmt_create , gmt_update , summary, tags , auth
+        from article
+        <where>
+            <if test="id != null">
+                id = #{ id }
+            </if>
+            <if test="category != null and category != ''">
+                <bind name="category2" value="'%' + category + '%'" />
+                or category LIKE #{ category2 }
+            </if>
+            <if test="title != null and title != ''">
+                <bind name="title2" value="'%' + title + '%'" />
+                or title LIKE #{ title2 }
+            </if>
+            <if test="markdown != null and markdown != ''">
+                <bind name="markdown2" value="'%' + markdown + '%'" />
+                or markdown LIKE #{ markdown2 }
+            </if>
+            <if test="tags != null and tags != ''">
+                or #{tags} in (
+                select SUBSTRING_INDEX(
+                SUBSTRING_INDEX(tags,'|',help_topic_id+1),'|',-1
+                ) AS num 
+                from mysql.help_topic 
+                where help_topic_id &lt; LENGTH(tags)-LENGTH(REPLACE(tags,'|',''))+1)
+            </if>
+            <if test="auth != null">
+                and auth &lt;= #{ auth }
+            </if>
+        </where>
+        order by gmt_update desc
+    </select>
+   
+    <select id="getById" parameterType="Article" resultMap="ArticleResultMap">
+        select id , title , category , gmt_create , gmt_update , summary, tags , auth , markdown
+        from article where id = #{ id } and auth &lt;= #{ auth}
+    </select>
+    
+    <!-- 概要字段可以由正文字段生成，为什么要将概要字段插入数据表？因为列出所有记录时不会列出正文字段，无法生成概要 -->
+    <insert id="insert" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
+        insert into article( id , title , category , gmt_create , gmt_update , summary , tags , auth , markdown )
+        values( #{ id },  #{ title },  #{ category },  #{ gmtCreate },  #{ gmtUpdate },  #{ summary },  #{ tags },  #{ auth },  #{ markdown })
+    </insert>
+    
+    <update id="update" parameterType="Article">
+        update article
+        set title=#{ title }, auth=#{auth}, category = #{ category }, summary = #{ summary }, tags = #{ tags }, markdown = #{ markdown }, gmt_update = #{ gmtUpdate }
+        where id = #{ id }
+    </update>
+    
+    <delete id="delete" parameterType="Article">
+        delete from article
+        where id = #{ id } 
+    </delete>
+    
+</mapper>
+

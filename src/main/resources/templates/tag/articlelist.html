@@ -1,0 +1,50 @@
+<div class="list-results">
+    <div class="row">
+        <div class="col-sm-12">
+            @for(var article in pageInfo.list){
+            <div class="item-ads ${article.auth==1?'highlight-ads':''}">
+                <div class="row">
+                    <div class="col-sm-12 col-xs-12 text-center">
+                        <div class="item-title">
+                            <a target="_blank" href="${ctxPath}/a/${article.id}">
+                                <h4>${article.title}</h4>
+                            </a>
+                        </div>
+                        <div class="item-meta">
+                            <ul>
+                                <li class="item-date">
+                                    <i class="fa fa-quote-left"></i>&nbsp;
+                                    ${article.summary}
+                                    <i class="fa fa-quote-right"></i>&nbsp;
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="item-meta">
+                            <ul>
+                                <li class="item-date">
+                                    <i class="fa fa-clock-o"></i>&nbsp;
+                                    ${printTime(article.gmtUpdate)}
+                                </li>
+                                <li class="item-type">
+                                    <i class="fa fa-bars"></i>&nbsp;
+                                    <a target="_blank" href="${ctxPath}/a/c/${article.category}">${article.category}</a>
+                                </li>
+                                <li class="item-cat hidden-xs">
+                                    <i class="fa fa-tags"></i>&nbsp;
+                                    @for(var str in strutil.split(article.tags,"\\|")){
+                                        @var tag = strutil.trim(str);
+                                        <a target="_blank" href="${ctxPath}/a/t/${tag}">${tag}</a>
+                                    @}
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+            @}
+
+        </div>
+    </div>
+</div>

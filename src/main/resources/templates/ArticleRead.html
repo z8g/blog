@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>  
+    <head>
+        <#head title="${article.title}" />
+        <link rel="stylesheet" href="${ctxPath}/assets/plugins/flexslider/flexslider.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="${ctxPath}/assets/plugins/markdown/editormd.css" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <#header />
+
+            <section class="main">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            &nbsp;
+                        </div>
+                        <div class="col-md-4">
+                            <ul class="breadcrumb pull-right">
+                                <li><a href="${ctxPath}/">首页</a></li>
+                                <li><a href="${ctxPath}/a">文章列表</a></li>
+                                <li>${article.title}</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="post">
+                                        <div class="post-price hidden-xs">
+                                            <span>Ctrl+D收藏</span>
+                                        </div>
+                                        <div class="post-body">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading text-center">
+                                                    <h2 id="article-title"><strong>${article.title!}</strong></h2>
+                                                    <input type="hidden" id="article-summary" value="${article.summary}" />
+                                                    <div class="post-meta">
+                                                        <ul>
+                                                            <li>
+                                                                <i class="fa fa-clock-o"></i>&nbsp;
+                                                                ${article.gmtUpdate!,dateFormat="yyyy-MM-dd HH:mm:ss"}
+                                                            </li>
+                                                            <li>
+                                                                <i class="fa fa-bars"></i>&nbsp;
+                                                                <a href="${ctxPath}/a/c/${article.category}">${article.category}</a></li>
+                                                            <li>
+                                                                <i class="fa fa-tags"></i>&nbsp;
+                                                                @for(var str in strutil.split(article.tags,"\\|")){
+                                                                @var tag =  strutil.trim(str);
+                                                                <a href="${ctxPath}/a/t/${tag}">${tag}</a>
+                                                                @}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+
+                                                    <div id="test-editormd">
+                                                        <textarea style="display:none;">${article.markdown!}</textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="post-footer">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="item-action pull-right">
+                                                        <ul>
+                                                            <li>
+                                                                <a id="share-weibo" href="#" data-toggle="tooltip" data-placement="top" title="分享到新浪微博" class="btn btn-info btn">
+                                                                    <i class="fa fa-weibo"></i>
+                                                                </a>
+                                                                <a href="#" data-toggle="tooltip" data-placement="top" title="分享到QQ" class="btn btn-info btn">
+                                                                    <i class="fa fa-qq"></i>
+                                                                </a>
+                                                                <a href="#" data-toggle="tooltip" data-placement="top" title="分享到人人网" class="btn btn-info btn">
+                                                                    <i class="fa fa-renren"></i>
+                                                                </a>
+                                                                <a href="#" data-toggle="tooltip" data-placement="top" title="分享到微信" class="btn btn-info btn">
+                                                                    <i class="fa fa-wechat"></i>
+                                                                </a>
+                                                                <a id="share-qqzone" href="#" data-toggle="tooltip" data-placement="top" title="分享到QQ空间" class="btn btn-info btn">
+                                                                    <i class="fa fa-star"></i>
+                                                                </a>
+                                                                @if(session.user != null){
+                                                                <a class="btn btn-success" href="${ctxPath}/user/article/update/${article.id!}">
+                                                                    <i class="fa fa-edit"></i>
+                                                                </a>
+                                                                <a class="btn btn-danger" href="${ctxPath}/user/article/delete/${article.id!}">
+                                                                    <i class="fa fa-times"></i>
+                                                                </a>
+                                                                @}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+<!--                        <div class="col-md-12 col-sm-12">
+                            <#sidebar_author />
+                            <#sidebar />
+                        </div>-->
+                    </div>
+                </div>
+            </section>
+
+            <#footer />
+        </div>
+
+        <#script />
+
+        <script defer src="${ctxPath}/assets/plugins/flexslider/jquery.flexslider.js"></script>
+        <script src="${ctxPath}/assets/plugins/markdown/editormd.js"></script>   
+        <script src="${ctxPath}/assets/js/markdown-read.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                // ===============Flexslider=====================
+                $('.flexslider').flexslider({
+                    animation: "slide",
+                    controlNav: "thumbnails",
+                    directionNav: false,
+                    start: function (slider) {
+                        $('body').removeClass('loading');
+                    }
+                });
+
+                // ==========tooltip initial=================
+                $('[data-toggle="tooltip"]').tooltip();
+                
+                /**
+                 * 分享 - QQ空间
+                 */
+                $('#share-qqzone').bind('click', function () {
+                    let root = 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?';
+                    let url = window.document.location.href;//当前网址
+                    let title = $('#article-title').text();
+                    let summary = $('#article-summary').val();
+                    let link = root + 'url=' + url + '&title=' + title + '&summary=' + summary + '&site=' + getLocalhostPath();
+                    console.log(link);
+                    location.href = link;
+                });
+                
+                /**
+                 * share-weibo
+                 * 分享到新浪微博
+                 */
+                $('#share-weibo').bind('click', function () {
+                    let root = 'http://service.weibo.com/share/share.php?';
+                    let url = window.document.location.href;//当前网址
+                    let title = $('#article-title').text();
+                    let link = root + 'url=' + url + '&title=' + title;
+                    console.log(link);
+                    location.href = link;
+                });
+            });
+        </script>
+
+    </body>
+</html> 
