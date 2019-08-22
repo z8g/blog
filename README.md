@@ -25,7 +25,7 @@
 
 
 # Personal blog
-Post Address: Https://blog.zhaoxuyang.net
+Post Address: https://blog.zhaoxuyang.net
 ## 1 Summary of features
 - Write a blog post using MarkDawn syntax.
 - Dynamic change of front-end information
