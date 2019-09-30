@@ -179,13 +179,14 @@
                     }
                     let category = articleNewCategory.trim().length > 0 ? articleNewCategory.trim() : articleCategory;
 
-
+                    let articleHtml = testEditor.getPreviewedHTML();
                     let url = getLocalhostPath();
                     if (articleId > 0) {
                         url += 'user/article/update/' + articleId;
                     } else {
                         url += "user/article/create";
                     }
+                    
                     /**
                      * 文章发表事件
                      */
@@ -193,6 +194,7 @@
                         data: {
                             title: articleTitle,
                             markdown: articleMarkdown,
+                            html: articleHtml,
                             category: category,
                             tags: articleTags,
                             id: articleId,

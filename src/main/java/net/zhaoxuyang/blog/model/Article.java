@@ -13,6 +13,7 @@ public class Article {
     private String title;//文章标题
     private String category;//文章类别
     private String markdown;// 文章源码
+    private String html;//生成的预览代码
     private String summary;//自动生成的摘要/概要
     private String tags;//文章标签集
     private Integer auth;//文章权限
@@ -21,16 +22,20 @@ public class Article {
 
     @Override
     public String toString() {
-        return "Article{" + "id=" + id
-                + ", title=" + title
-                + ", category=" + category
-                + ", markdown=" + markdown
-                + ", summary=" + summary
-                + ", tags=" + tags
-                + ", auth=" + auth
-                + ", gmtCreate=" + gmtCreate
-                + ", gmtUpdate=" + gmtUpdate + '}';
+        return "Article{" + 
+                "id=" + id +
+                ", title=" + title + 
+                ", category=" + category + 
+                ", markdown=" + markdown + 
+                ", html=" + html + 
+                ", summary=" + summary +
+                ", tags=" + tags + 
+                ", auth=" + auth + 
+                ", gmtCreate=" + gmtCreate + 
+                ", gmtUpdate=" + gmtUpdate + 
+                '}';
     }
+
 
     final static int LENGTH_SUMMARY = 100;
     final static String TAG_SUMMARY_START = "<!--summary";
@@ -176,5 +181,14 @@ public class Article {
     public void setGmtUpdate(Date gmtUpdate) {
         this.gmtUpdate = gmtUpdate;
     }
+
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
+    
 
 }

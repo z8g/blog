@@ -9,6 +9,7 @@
         <result property="gmtCreate" column="gmt_create"/>
         <result property="gmtUpdate" column="gmt_update"/>
         <result property="markdown" column="markdown"/>
+        <result property="html" column="html"/>
         <result property="summary" column="summary"/>
         <result property="tags" column="tags"/>
         <result property="auth" column="auth"/>
@@ -85,19 +86,19 @@
     </select>
    
     <select id="getById" parameterType="Article" resultMap="ArticleResultMap">
-        select id , title , category , gmt_create , gmt_update , summary, tags , auth , markdown
+        select id , title , category , gmt_create , gmt_update , summary, tags , auth , markdown, html
         from article where id = #{ id } and auth &lt;= #{ auth}
     </select>
     
     <!-- 概要字段可以由正文字段生成，为什么要将概要字段插入数据表？因为列出所有记录时不会列出正文字段，无法生成概要 -->
     <insert id="insert" parameterType="Article" useGeneratedKeys="true" keyProperty="id">
-        insert into article( id , title , category , gmt_create , gmt_update , summary , tags , auth , markdown )
-        values( #{ id },  #{ title },  #{ category },  #{ gmtCreate },  #{ gmtUpdate },  #{ summary },  #{ tags },  #{ auth },  #{ markdown })
+        insert into article( id , title , category , gmt_create , gmt_update , summary , tags , auth , markdown, html )
+        values( #{ id },  #{ title },  #{ category },  #{ gmtCreate },  #{ gmtUpdate },  #{ summary },  #{ tags },  #{ auth },  #{ markdown }, #{ html })
     </insert>
     
     <update id="update" parameterType="Article">
         update article
-        set title=#{ title }, auth=#{auth}, category = #{ category }, summary = #{ summary }, tags = #{ tags }, markdown = #{ markdown }, gmt_update = #{ gmtUpdate }
+        set title=#{ title }, auth=#{auth}, category = #{ category }, summary = #{ summary }, tags = #{ tags }, markdown = #{ markdown }, html = #{ html}, gmt_update = #{ gmtUpdate }
         where id = #{ id }
     </update>
     
